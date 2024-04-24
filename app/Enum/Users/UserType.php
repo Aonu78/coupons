@@ -8,4 +8,5 @@ enum UserType: string
     case USER = "user";
     case ADMIN = "admin";
     case BOT = "bot";
+    case AGENT = "agent";
 }

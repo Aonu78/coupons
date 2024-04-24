@@ -18,6 +18,7 @@ use App\DataTransfer\User\BankAccount\SaveBankDTO;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Http\Resources\User\Billing\PaymentMethodTransformer;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Support\Facades\Auth;
 
 final class UserService
 {
@@ -25,7 +26,13 @@ final class UserService
         private readonly FilesystemService $filesystemService,
         private readonly User $userModel
     ) {}
+    public function getAllUsersCreatedByLoggedInUser()
+    {
+        $loggedInUserId = Auth::id();
+        $query = $this->userModel->newQuery();
 
+        return $query->where('created_by', $loggedInUserId)->paginate();
+    }
     public function getUsersWithoutBots(): LengthAwarePaginator
     {
         $query = $this->userModel->newQuery();

@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CouponsController;
 use App\Http\Controllers\CompanyController;
-
+use App\Http\Controllers\Auth\RegisteredUserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,7 +39,43 @@ Route::middleware('auth')->group(function () {
     });
 });
 
+Route::post('user/newuser/register', [RegisteredUserController::class, 'registerUser'])->name("user.newuser.register");
+
 Route::get('/coupon/{id}/use', [CouponsController::class, 'usePage'])->name('coupons.use');
 Route::post('/coupon/{id}/use', [CouponsController::class, 'use'])->name('coupons.use.process');
 
 require __DIR__.'/auth.php';
+
+Route::prefix('company')->group(function () {
+    Route::get('/login', [CompanyController::class, 'login'])->name('company.login');
+    Route::post('/login', [CompanyController::class, 'authenticate']);
+});
+
+Route::prefix('agent')->group(function () {
+    Route::get('/login', [ProfileController::class, 'login'])->name('profile.login');
+    Route::post('/login', [ProfileController::class, 'authenticate']);
+});
+Route::middleware(['auth'])->group(function () {
+    Route::prefix('agent')->group(function () {
+        Route::post('locale', function (\Illuminate\Http\Request $request) {
+            if (in_array($request->input('locale'), ['en', 'jp'])) {
+                $request->session()->put('locale', $request->input('locale'));
+            }
+            return back();
+        })->name('profile.locale');
+        Route::post('/logout', [ProfileController::class, 'logout'])->name('profile.logout');
+        Route::get('/', [ProfileController::class, 'main'])->name('profile.main');
+    });
+});
+Route::middleware(['auth'])->group(function () {
+    Route::prefix('company')->group(function () {
+        Route::post('locale', function (\Illuminate\Http\Request $request) {
+            if (in_array($request->input('locale'), ['en', 'jp'])) {
+                $request->session()->put('locale', $request->input('locale'));
+            }
+            return back();
+        })->name('company.locale');
+        Route::post('/logout', [CompanyController::class, 'logout'])->name('company.logout');
+        Route::get('/', [CompanyController::class, 'main'])->name('company.main');
+    });
+});

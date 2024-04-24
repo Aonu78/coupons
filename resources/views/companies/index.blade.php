@@ -1,4 +1,4 @@
-<x-admin-layout>
+<x-app-layout>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/fontawesome.min.css" integrity="sha512-UuQ/zJlbMVAw/UU8vVBhnI4op+/tFOpQZVT+FormmIEhRSCnJWyHiBbEVgM4Uztsht41f3FzVWgLuwzUqOObKw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <div class="py-12">
@@ -10,10 +10,19 @@
                 <div class="flex flex-row justify-between cus-display">
                     <h1 class="text-3xl text-center	text-gray-900 dark:text-gray-100">{{__('user.admin.title')}}</h1>
                     <input placeholder="search user" id="searchInput" class="search-width inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150">
-
-                    <button type="submit" class="btn inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-user-creation')">
+                    {{-- <button type="button" id="createUserButton" class="btn btn-primary inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150" data-toggle="modal" data-target="#createUserModal">
+                        Create User
+                    </button> --}}
+                    {{-- <button id="createUserButton" type="submit" class="btn" x-on:click.prevent="$dispatch('open-modal', 'create-user')">
                         <i class="fa-solid fa-plus fa-bold"></i>
-                    </button>
+                    </button> --}}
+                    {{-- <x-danger-button
+                    x-data=""
+                    x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
+                >{{ __('Delete Account') }}</x-danger-button> --}}
+                <button type="submit" class="btn inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-user-creation')">
+                    <i class="fa-solid fa-plus fa-bold"></i>
+                </button>
                 </div>
 
                 <table id="myTable" class="mt-5 min-w-full text-left text-gray-900 dark:text-gray-100">
@@ -76,7 +85,7 @@
             required
         />        
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                {{ __('What Types of Users Do Wants Create?') }}
+                {{ __('Create New Agent Here') }}
             </h2>
             <div class="mt-6">
                 <x-input-label for="User Name" value="{{ __('name') }}" class="sr-only" />
@@ -191,4 +200,4 @@
         </script>
         
         
-</x-admin-layout>
+</x-app-layout>

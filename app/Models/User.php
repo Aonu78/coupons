@@ -134,8 +134,10 @@ final class User extends Authenticatable implements WalletHolderContract, HasWit
         'name',
         'email',
         'password',
+        'user_type',
+        'created_by',
     ];
-
+    protected $guarded = ['id'];
     /**
      * The attributes that should be hidden for serialization.
      *

@@ -17,6 +17,7 @@ return new class extends Migration
                \App\Enum\Users\UserType::BOT->value,
                \App\Enum\Users\UserType::COMPANY->value,
                \App\Enum\Users\UserType::ADMIN->value,
+               \App\Enum\Users\UserType::AGENT->value,
             ])->after('password');
         });
     }

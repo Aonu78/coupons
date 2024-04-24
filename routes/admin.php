@@ -19,7 +19,10 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [AuthenticationController::class, 'login'])->name('admin.login');
 });
 
+Route::delete('/alluser/users/destroy/{user}', [UsersController::class, 'destroy'])->name('alluser.users.destroy');
+
 Route::middleware('auth:admin')->group(function () {
+
     Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::post('locale', function (\Illuminate\Http\Request $request) {
@@ -34,6 +37,7 @@ Route::middleware('auth:admin')->group(function () {
 
     Route::prefix('users')->group(function () {
         Route::get('/', [UsersController::class, 'index'])->name('admin.users.index');
+        Route::get('/all/download', [UsersController::class, 'downloadUsersCsv'])->name('admin.users.download.csv');
         Route::get('/edit/{id}', [UsersController::class, 'edit'])->name('admin.users.edit');
     });
 

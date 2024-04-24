@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('phone_number', 255)->nullable()->change(); 
+            $table->unsignedBigInteger('created_by')->nullable(); // Assuming 'created_by' is the ID of the user who created this user
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('set null'); 
+            // Assuming a user can be deleted but their creations should remain intact
         });
-        
     }
 
     /**
@@ -23,7 +24,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('phone_number', 255)->nullable(false)->change();
+            $table->dropForeign(['created_by']);
+            $table->dropColumn('created_by');
         });
     }
 };

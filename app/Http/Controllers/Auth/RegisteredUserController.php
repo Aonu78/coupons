@@ -41,13 +41,32 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'user_type' => UserType::COMPANY->value
         ]);
-
+               
         event(new Registered($user));
 
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);
+    }
+
+    public function registerUser(Request $request): RedirectResponse
+    {
+
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'password' => ['required']]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'user_type' => $request->user_type,
+            'created_by' => $request->user_id
+        ]);
+        event(new Registered($user));
+        return redirect()->back();
+        // return redirect()->route('admin.users.index')->with('success', 'User registered successfully');            
     }
 }
