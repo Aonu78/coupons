@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ route('register.agent.store') }}">
         @csrf
 
         <!-- Name -->
@@ -38,7 +38,6 @@
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
-
         <!-- referral_code -->
         <div class="mt-4">
             <x-input-label for="referral_code" :value="__('Referral Code')" />

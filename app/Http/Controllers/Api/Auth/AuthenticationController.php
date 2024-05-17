@@ -63,8 +63,12 @@ final class AuthenticationController extends Controller
         $user = Auth::user();
         $token = $user->createToken('auth_token')->plainTextToken;
 
+        // return response()->json([
+        //     "data"  => new UserTransformer($user),
+        //     'token' => $token
+        // ]);
         return response()->json([
-            "data"  => new UserTransformer($user),
+            "data"  => $user,
             'token' => $token
         ]);
     }

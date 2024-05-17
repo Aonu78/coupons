@@ -182,6 +182,7 @@
                                     <th scope="col" class="px-6 py-3">{{__('user.admin.index.name')}}</th>
                                     <th scope="col" class="px-6 py-3">{{__('user.admin.index.email')}}</th>
                                     <th scope="col" class="px-6 py-3">{{__('user.admin.index.type')}}</th>
+                                    <th scope="col" class="px-6 py-3">{{__('user.admin.index.referral')}}</th>
                                     <th scope="col" class="px-6 py-3">{{__('user.admin.index.registration_date')}}</th>
                                     <th scope="col" class="px-6 py-3 text-center">{{__('user.admin.index.actions')}}</th>
                                     <th scope="col" class="px-6 py-3 text-center"></th>
@@ -194,6 +195,7 @@
                                         <td class="px-6 py-4">{{ $user->name }}</td>
                                         <td class="px-6 py-4">{{ $user->email }}</td>
                                         <td class="px-6 py-4">{{ ucfirst($user->user_type) }}</td>
+                                        <td class="px-6 py-4">{{ $user->referral_code }}</td>
                                         <td class="px-6 py-4">{{ \Carbon\Carbon::parse($user->created_at)->format('Y-m-d') }}</td>
                                         
                                         <td class="px-6 py-4 text-center">

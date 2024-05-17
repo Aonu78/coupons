@@ -25,7 +25,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
         Route::get('/company', [CompanyController::class, 'index'])->name('profile.company');
         Route::post('/company', [CompanyController::class, 'update'])->name('profile.company.update');
     });
@@ -53,6 +52,8 @@ Route::prefix('company')->group(function () {
 
 Route::prefix('agent')->group(function () {
     Route::get('/login', [ProfileController::class, 'login'])->name('profile.login');
+    Route::get('/register', [ProfileController::class, 'create'])->name('register.agent');
+    Route::post('/register', [ProfileController::class, 'store'])->name('register.agent.store');
     Route::post('/login', [ProfileController::class, 'authenticate']);
 });
 Route::middleware(['auth'])->group(function () {

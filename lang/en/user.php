@@ -13,6 +13,7 @@ return [
             "name"              => "Name",
             "email"             => "Email",
             "type"              => "Type",
+            "referral"          => "Referral",
             "registration_date" => "Registration Date",
             "actions"           => "Actions",
             "show_details"      => "Show Details",

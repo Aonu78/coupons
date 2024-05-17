@@ -13,6 +13,7 @@ return [
             "name"              => "名称",
             "email"             => "電子メール",
             "type"              => "タイプ",
+            "referral"          => "照会",
             "registration_date" => "登録日",
             "actions"           => "行動",
             "show_details"      => "詳細を表示",

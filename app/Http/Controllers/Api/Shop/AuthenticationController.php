@@ -27,7 +27,7 @@ final class AuthenticationController extends Controller
     {
         $user = $this->userService->findByLogin($request->str("email"));
 
-        if (is_null($user) || $user->user_type !== UserType::COMPANY->value) {
+        if (is_null($user) || $user->user_type !== UserType::AGENT->value) {
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
             ]);
@@ -44,7 +44,7 @@ final class AuthenticationController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return $response->success(
-            new UserTransformer($user),
+            $user,
             meta: ["token" => $token]
         );
     }

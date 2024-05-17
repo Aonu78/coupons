@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Services\User\UserService;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
+use App\Models\User;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Validation\Rules;
 class ProfileController extends Controller
 {
     /**
@@ -95,5 +100,47 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('profile.login');
+    }
+    public function create(): View
+    {
+        return view('profile.register');
+    }
+
+    /**
+     * Handle an incoming registration request.
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function store(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'referral_code' => ['required',
+                function ($attribute, $value, $fail) {
+                    if ($value) {
+                        $referrer = User::where('referral_code', $value)->first();
+
+                        if (!$referrer || $referrer->user_type !== 'company') {
+                            $fail('The referral code is invalid or does not belong to any Company.');
+                        }
+                    }
+                },
+            ],
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'created_by' => $request->referral_code ? User::where('referral_code', $request->referral_code)->first()->id : null,
+        ]);
+               
+        event(new Registered($user));
+
+        Auth::login($user);
+
+        return redirect('/agent');
     }
 }
