@@ -20,7 +20,7 @@ class UserTransformer extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $this->createOrGetStripeCustomer();
+        // $this->createOrGetStripeCustomer();
 
         $cpTokens = $this->getWallet(WalletCurrency::CP_TOKEN)?->wallet_balance?->getAmountString(
         ) ?? $this->cp_token_balance;

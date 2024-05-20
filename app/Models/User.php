@@ -33,7 +33,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use App\Http\Resources\User\Billing\PaymentMethodTransformer;
-
+use Stripe\StripeClient;
 /**
  * App\Models\User
  *
@@ -137,6 +137,7 @@ final class User extends Authenticatable implements WalletHolderContract, HasWit
         'user_type',
         'created_by',
         'referral_code',
+        'line_id',
     ];
     protected $guarded = ['id'];
     /**
@@ -246,5 +247,21 @@ final class User extends Authenticatable implements WalletHolderContract, HasWit
         } else {
             $this->test_stripe_id = $value;
         }
+    }
+    public function createOrGetStripeCustomer()
+    {
+        $stripe = new StripeClient(config('services.stripe.secret'));
+
+        if (!$this->stripe_id) {
+            $customer = $stripe->customers->create([
+                'email' => $this->email,
+                'name' => $this->name,
+            ]);
+
+            $this->stripe_id = $customer->id;
+            $this->save();
+        }
+
+        return $stripe->customers->retrieve($this->stripe_id);
     }
 }

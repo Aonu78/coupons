@@ -21,7 +21,7 @@ final class CouponsController extends Controller
     public function index()
     {
         $coupons = $this->couponsService->getAll();
-
+        // dd($coupons);
         return view('admin.coupons.index', compact('coupons'));
     }
 
@@ -34,23 +34,23 @@ final class CouponsController extends Controller
     {
         /** @var User $user */
         $user = Auth::guard('admin')->user();
-
+        
         $coupon = $user->coupons()->create(
             $request->only(['name', 'price', 'discount', 'sales_price', 'start_date', 'end_date'])
         );
-
+        
         $file = $request->file('design');
-
+       
         $fileName = sprintf(CouponsFiles::COUPON_IMAGE, $coupon->id);
-
+        
         $this->filesystemService->save($fileName, $file->getContent());
 
         $bgFile = $request->file('background');
         $bgFileName = sprintf(CouponsFiles::COUPON_BG_IMAGE, $coupon->id);
-
+        // dd("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
         $this->filesystemService->save($bgFileName, $bgFile->getContent());
 
-
+        // dd($request->all());
         return redirect()->route('admin.coupons.index');
     }
 

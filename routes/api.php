@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Resources\UserTransformer;
@@ -35,6 +36,7 @@ Route::prefix('authentication')->group(function () {
     Route::post('login', [AuthenticationController::class, 'login']);
     Route::post('login/google', [AuthenticationController::class, 'loginByGoogle']);
     Route::post('login/line', [AuthenticationController::class, 'loginByLine']);
+    Route::get('line/callback', [AuthenticationController::class, 'handleLineCallback']);
     Route::post('login/apple', [AuthenticationController::class, 'loginByApple']);
     Route::post('register', [AuthenticationController::class, 'register']);
     Route::post('password/otp', [AuthenticationController::class, 'changePassword']);
@@ -45,7 +47,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('user')->group(function () {
         Route::get('/', function (Request $request) {
             return response()->json([
-                "data" => new UserTransformer($request->user())
+                // "data" => new UserTransformer($request->user())
+                "data" => User::find($request->user())
             ]);
         });
 
@@ -160,7 +163,8 @@ Route::prefix('shop')->group(function () {
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return response()->json([
-        "data" => new UserTransformer($request->user())
+        // "data" => new UserTransformer($request->user())
+        "data" => User::find($request->user())
     ]);
 });
 

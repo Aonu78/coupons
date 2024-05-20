@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('coupons', function (Blueprint $table) {
-            $table->dropColumn(["discount", "sales_price"]);
+            // $table->dropColumn(["discount", "sales_price"]);
 
             $table->date("coupon_usage_start_date")->nullable()->after("end_date");
             $table->date("coupon_usage_end_date")->nullable()->after("coupon_usage_start_date");

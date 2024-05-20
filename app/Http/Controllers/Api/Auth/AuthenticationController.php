@@ -25,7 +25,7 @@ use App\Http\Requests\Api\User\LoginRequest;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\Api\User\SendOtpRequest;
 use App\Http\Requests\Api\User\RegisterRequest;
-
+use Illuminate\Support\Facades\Http;
 final class AuthenticationController extends Controller
 {
     public function __construct(
@@ -42,7 +42,8 @@ final class AuthenticationController extends Controller
         $authToken = $this->userService->createToken($user, 'auth_token');
 
         return $response->success(
-            new UserTransformer($user),
+            // new UserTransformer($user),
+            $user,
             trans('auth.success_registration'),
             ["token" => $authToken]
         );
@@ -106,7 +107,8 @@ final class AuthenticationController extends Controller
             $authToken = $this->userService->createToken($newUser, 'auth_token');
 
             return $response->success(
-                new UserTransformer($newUser),
+                $newUser,
+                // new UserTransformer($newUser),
                 trans('auth.success_registration'),
                 [
                     "token"             => $authToken,
@@ -119,67 +121,108 @@ final class AuthenticationController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return $response->success(
-            new UserTransformer($user),
+            // new UserTransformer($user),
+            $user,
             meta: ['token' => $token]
         );
     }
 
     public function loginByLine(Request $request, ApiResponse $response)
     {
-        $http = new Client();
-
-        try {
-            $lineResponse = $http->post('https://api.line.me/oauth2/v2.1/verify', [
-                'form_params' => [
-                    'id_token'  => $request->input('access_token'),
-                    'client_id' => env("LINE_CLIENT_ID")
-                ]
+        // try {
+            $lineResponse = Http::asForm()->post('https://api.line.me/oauth2/v2.1/verify', [
+                'id_token'  => $request->input('access_token'),
+                'client_id' => env('LINE_CLIENT_ID'),
+                'client_secret' => env('LINE_CLIENT_SECRET')
             ]);
 
-            $responseBody = json_decode($lineResponse->getBody()->getContents(), JSON_OBJECT_AS_ARRAY);
-
-            if (is_null($responseBody['email'])) {
-                return $response->error("Line account must have email address");
+            $responseBody = $lineResponse->json();
+            try{
+                $user = User::first(
+                    ['line_id' => $responseBody['sub']]
+                );
+            } catch (\Exception $e) {
+                $user = new User();
+                $user->line_id = $responseBody['sub'];
+                $user->name = $responseBody['name'] ?? 'Unknown';
+                $user->email = $responseBody['email'] ?? 'Unknown';
+                $user->password = $responseBody['password'] ?? 'Unknown';
+                $user->save();
             }
 
-            $user = $this->userService->findByLogin($responseBody['email']);
-
-            if (isset($user)) {
+            if ($user) {
                 $token = $user->createToken('auth_token')->plainTextToken;
 
                 return $response->success(
-                    new UserTransformer($user),
+                    $user,
                     meta: ['token' => $token]
                 );
             }
 
-            $newPassword = Str::random(8);
-
-            $newUserDTO = new CreateUserDTO(
-                $responseBody['name'],
-                $responseBody['email'],
-                $newPassword,
-                UserType::USER
-            );
-
-            $newUser = $this->userService->create($newUserDTO);
-            $newUser = $this->userService->updateAvatar($newUser, file_get_contents($responseBody['picture']));
-
-            $authToken = $this->userService->createToken($newUser, 'auth_token');
-
-            return $response->success(
-                new UserTransformer($newUser),
-                trans('auth.success_registration'),
-                [
-                    "token"             => $authToken,
-                    "needResetPassword" => true,
-                    "tempPassword"      => $newPassword
-                ],
-            );
-        } catch (\Exception) {
-            return $response->error("Invalid Token");
-        }
+        // } catch (\Exception $e) {
+        //     return $response->error("Invalid Token");
+        // }
     }
+
+    // public function loginByLine(Request $request, ApiResponse $response)
+    // {
+
+        // try {
+            // $lineResponse = Http::asForm()->post('https://api.line.me/oauth2/v2.1/verify', [
+            //     'form_params' => [
+            //         'id_token'  => $request->input('access_token'),
+            //         'client_id' => env('LINE_CLIENT_ID'),
+            //         'client_secret' => env('LINE_CLIENT_SECRET')
+            //     ]
+            // ]);
+
+            // $responseBody = json_decode($lineResponse->getBody()->getContents(), JSON_OBJECT_AS_ARRAY);
+
+            // if (is_null($responseBody['email'])) {
+            //     return $response->error("Line account must have email address");
+            // }
+
+            // $user = $this->userService->findByLogin($responseBody['email']);
+            // $user = User::findorcreate("line_id",$responseBody['sub']);
+
+            // if (isset($user)) {
+            //     $token = $user->createToken('auth_token')->plainTextToken;
+
+            //     return $response->success(
+            //         $user,
+            //         // new UserTransformer($user),
+            //         meta: ['token' => $token]
+            //     );
+            // }
+
+            // $newPassword = Str::random(8);
+
+            // $newUserDTO = new CreateUserDTO(
+            //     $responseBody['name'],
+            //     $responseBody['email'],
+            //     $newPassword,
+            //     UserType::USER
+            // );
+
+            // $newUser = $this->userService->create($newUserDTO);
+            // $newUser = $this->userService->updateAvatar($newUser, file_get_contents($responseBody['picture']));
+
+            // $authToken = $this->userService->createToken($newUser, 'auth_token');
+
+            // return $response->success(
+            //     $newUser,
+            //     // new UserTransformer($newUser),
+            //     trans('auth.success_registration'),
+            //     [
+            //         "token"             => $authToken,
+            //         "needResetPassword" => true,
+            //         "tempPassword"      => $newPassword
+            //     ],
+            // );
+        // } catch (\Exception) {
+        //     return $response->error("Invalid Token");
+        // }
+    // }
 
     public function loginByApple(Request $request, ApiResponse $response) {
         $user = $this->userService->findByLogin($request->str('email'));
@@ -188,7 +231,8 @@ final class AuthenticationController extends Controller
             $token = $user->createToken('auth_token')->plainTextToken;
 
             return $response->success(
-                new UserTransformer($user),
+                $user,
+                // new UserTransformer($user),
                 meta: ['token' => $token]
             );
         }
@@ -207,7 +251,8 @@ final class AuthenticationController extends Controller
         $authToken = $this->userService->createToken($newUser, 'auth_token');
 
         return $response->success(
-            new UserTransformer($newUser),
+            $newUser,
+            // new UserTransformer($newUser),
             trans('auth.success_registration'),
             [
                 "token"             => $authToken,

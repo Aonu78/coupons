@@ -4,7 +4,7 @@ namespace App\Services\Filesystem;
 
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
+use League\Flysystem\UnableToCheckFileExistence;
 final class FilesystemService
 {
     /**
@@ -16,11 +16,17 @@ final class FilesystemService
 
     public function save(string $path, string $content): void
     {
-        if ($this->objFilesystem->exists($path)) {
-            $this->objFilesystem->delete($path);
+        try{
+            if ($this->objFilesystem->exists($path)) {
+                $this->objFilesystem->delete($path);
+
+            }
+            $this->objFilesystem->append($path, $content);
+        }
+        catch (UnableToCheckFileExistence $e){
+
         }
 
-        $this->objFilesystem->append($path, $content);
     }
 
     public function readFile(string $path): ?string

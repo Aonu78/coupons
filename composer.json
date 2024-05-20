@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.8",
         "league/flysystem-aws-s3-v3": "^3.16",
         "socialiteproviders/google": "^4.1",
+        "symfony/psr-http-message-bridge": "^6.4",
         "twilio/sdk": "^7.12"
     },
     "require-dev": {

@@ -44,7 +44,7 @@ final class CouponsService
             $query->whereRaw('LOWER(`name`) LIKE ?', [ '%' . strtolower($name) . '%' ] );
         }
 
-        $query->whereDate('coupon_usage_end_date', '>=', now());
+        // $query->whereDate('coupon_usage_end_date', '>=', now());
 
         return $query->paginate();
     }
