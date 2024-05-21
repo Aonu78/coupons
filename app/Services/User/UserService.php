@@ -53,7 +53,10 @@ final class UserService
         $newUser->user_type = $createUserDTO->userType;
         $newUser->phone_number = $createUserDTO->phoneNumber;
         $newUser->invite_code = rand(100000, 999999);
-
+        if ($createUserDTO->referral_code){
+            $ref_user = User::where('referral_code',$createUserDTO->referral_code)->first();
+            $newUser->created_by = $ref_user->id;
+        }
         if (is_string($createUserDTO->inviteCode)) {
             $inviter = $this->findByInviteCode($createUserDTO->inviteCode);
 

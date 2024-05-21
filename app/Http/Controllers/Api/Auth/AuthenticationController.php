@@ -135,8 +135,8 @@ final class AuthenticationController extends Controller
                 'client_id' => env('LINE_CLIENT_ID'),
                 'client_secret' => env('LINE_CLIENT_SECRET')
             ]);
-
             $responseBody = $lineResponse->json();
+            // return $responseBody;
             try{
                 $user = User::first(
                     ['line_id' => $responseBody['sub']]
