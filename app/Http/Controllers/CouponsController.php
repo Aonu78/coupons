@@ -136,4 +136,14 @@ final class CouponsController extends Controller
 
         return view('coupons.result', compact('processed', 'message'));
     }
+    public function destroy($id)
+    {
+        try {
+            $coupon = Coupon::findOrFail($id); // Ensure the coupon exists
+            $coupon->delete();
+            return redirect()->back()->with('success', 'Coupon deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Coupon could not be deleted.');
+        }
+    }
 }

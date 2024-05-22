@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [CouponsController::class, 'create'])->name('coupons.create');
         Route::get('/edit/{id}', [CouponsController::class, 'edit'])->name('coupons.edit');
         Route::post('/edit/{id}', [CouponsController::class, 'update'])->name('coupons.update');
+        Route::get('/destroy/{id}', [CouponsController::class, 'destroy'])->name('coupons.destroy');
     });
 });
 
@@ -47,6 +48,8 @@ require __DIR__.'/auth.php';
 
 Route::prefix('company')->group(function () {
     Route::get('/login', [CompanyController::class, 'login'])->name('company.login');
+    Route::get('/register', [CompanyController::class, 'register'])->name('company.register');
+    Route::post('/register', [CompanyController::class, 'registersave'])->name('company.register.save');
     Route::post('/login', [CompanyController::class, 'authenticate']);
 });
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Coupon;
 use App\Models\User;
 use App\Constants\CouponsFiles;
 use App\Http\Controllers\Controller;
@@ -93,5 +94,15 @@ final class CouponsController extends Controller
 
         return redirect()->route('admin.coupons.index');
     }
-
+    public function destroy($id)
+    {
+        try {
+            $coupon = Coupon::findOrFail($id); // Ensure the coupon exists
+            $coupon->delete();
+            return redirect()->back()->with('success', 'Coupon deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Coupon could not be deleted.');
+        }
+    }
+    
 }

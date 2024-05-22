@@ -69,7 +69,7 @@ final class AuthenticationController extends Controller
          $validator = Validator::make($request->all(), [
              'name' => 'required|string|max:255',
              'email' => 'required|string|email|max:255|unique:users',
-             'referral_code' => 'nullable|string|max:255',
+             'invite_code' => 'nullable|string|max:255',
              'password' => 'required|string|min:8', // Ensure password confirmation is provided
          ]);
          
@@ -86,8 +86,8 @@ final class AuthenticationController extends Controller
          $user->email = $request->email;
          $user->referral_code = $referralCode;
 
-         if ($request->referral_code) {
-             $referringUser = User::where('referral_code', $request->referral_code)->first();
+         if ($request->invite_code) {
+             $referringUser = User::where('referral_code', $request->invite_code)->first();
              if ($referringUser) {
                  $user->created_by = $referringUser->id;
              } else {

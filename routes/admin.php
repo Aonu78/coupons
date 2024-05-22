@@ -70,6 +70,7 @@ Route::middleware('auth:admin')->group(function () {
         Route::post('/create', [CouponsController::class, 'save'])->name('admin.coupons.save');
         Route::get('/edit/{id}', [CouponsController::class, 'edit'])->name('admin.coupons.edit');
         Route::post('/edit/{id}', [CouponsController::class, 'update'])->name('admin.coupons.update');
+        Route::get('/destroy/{id}', [CouponsController::class, 'destroy'])->name('admin.coupons.destroy');
 
     });
 
