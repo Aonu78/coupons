@@ -29,6 +29,15 @@
                                       :value="old('coupon_price')" required/>
                         <x-input-error :messages="$errors->get('coupon_price')" class="mt-2"/>
                     </div>
+                    
+                    <div class="mt-2">
+                        <x-input-label for="game_id" :value="__('Select Game')"/>
+                        <select required class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm block mt-1 w-full" name="game_id" id="game_id">
+                            @foreach ($games as $item)
+                            <option value="{{ $item->id }}">{{ $item->game_name }}</option>
+                            @endforeach                            
+                        </select>
+                    </div>
 
                     <div class="flex flex-row gap-x-2">
                         <div class="mt-2 flex-1">

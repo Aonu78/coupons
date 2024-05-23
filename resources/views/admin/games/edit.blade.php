@@ -51,8 +51,12 @@
 
                     <div class="mt-2">
                         <x-input-label for="design" :value="__('games.admin.edit.cover_image')"/>
-                        <x-text-input id="design" class="block mt-1 w-full" type="file" name="design"
+                        <div style="display: flex;">
+                            <img src="{{asset($game->game_image) }}" alt="" width="35px" style="margin-right: 20px;">
+
+                            <x-text-input id="design" class="block mt-1 w-full" type="file" name="design"
                                       :value="old('design')" accept="image/*"/>
+                        </div>
                         <x-input-error :messages="$errors->get('design')" class="mt-2"/>
                     </div>
 

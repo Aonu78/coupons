@@ -13,10 +13,10 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    <link rel="preload" as="style" href="http://127.0.0.1:8000/build/assets/app-1fd46269.css" />
-    <link rel="modulepreload" href="http://127.0.0.1:8000/build/assets/app-7c0572f8.js" />
-    <link rel="stylesheet" href="http://127.0.0.1:8000/build/assets/app-1fd46269.css" />
-    <script type="module" src="http://127.0.0.1:8000/build/assets/app-7c0572f8.js"></script>
+    <link rel="preload" as="style" href="/build/assets/app-1fd46269.css" />
+    <link rel="modulepreload" href="/build/assets/app-7c0572f8.js" />
+    <link rel="stylesheet" href="/build/assets/app-1fd46269.css" />
+    <script type="module" src="/build/assets/app-7c0572f8.js"></script>
 </head>
 
 <body class="font-sans antialiased">
@@ -107,7 +107,7 @@
             <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
                 <div class="pt-2 pb-3 space-y-1">
                     <a class="block w-full pl-3 pr-4 py-2 border-l-4 border-indigo-400 dark:border-indigo-600 text-left text-base font-medium text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-900/50 focus:outline-none focus:text-indigo-800 dark:focus:text-indigo-200 focus:bg-indigo-100 dark:focus:bg-indigo-900 focus:border-indigo-700 dark:focus:border-indigo-300 transition duration-150 ease-in-out"
-                        href="http://127.0.0.1:8000/coupons">
+                        href="/coupons">
                         クーポン
                     </a>
                 </div>
@@ -121,21 +121,21 @@
 
                     <div class="mt-3 space-y-1">
                         <a class="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-base font-medium text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none focus:text-gray-800 dark:focus:text-gray-200 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-gray-300 dark:focus:border-gray-600 transition duration-150 ease-in-out"
-                            href="http://127.0.0.1:8000/profile">
+                            href="/profile">
                             Profile
                         </a>
 
                         <a class="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-base font-medium text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none focus:text-gray-800 dark:focus:text-gray-200 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-gray-300 dark:focus:border-gray-600 transition duration-150 ease-in-out"
-                            href="http://127.0.0.1:8000/profile/company">
+                            href="/profile/company">
                             Company
                         </a>
 
                         <!-- Authentication -->
-                        <form method="POST" action="http://127.0.0.1:8000/logout">
+                        <form method="POST" action="/logout">
                             <input type="hidden" name="_token" value="dLbjk5S2ExeIzEH1Heuw0CaqKuQghNrHzS10U3Aa"
                                 autocomplete="off">
                             <a class="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-base font-medium text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none focus:text-gray-800 dark:focus:text-gray-200 focus:bg-gray-50 dark:focus:bg-gray-700 focus:border-gray-300 dark:focus:border-gray-600 transition duration-150 ease-in-out"
-                                href="http://127.0.0.1:8000/logout"
+                                href="/logout"
                                 onclick="event.preventDefault();
                                         this.closest('form').submit();">
                                 Log Out
@@ -147,7 +147,22 @@
         </nav>
 
         <!-- Page Heading -->
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                    <button type="button" class="close" onclick="this.parentElement.style.display='none';">&times;</button>
+                </div>
+            @endif
+    
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                    <button type="button" class="close" onclick="this.parentElement.style.display='none';">&times;</button>
+                </div>
+            @endif
 
+        </div>
         <!-- Page Content -->
         <main>
             

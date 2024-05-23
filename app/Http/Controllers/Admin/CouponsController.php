@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Coupon;
+use App\Models\Game;
 use App\Models\User;
+use App\Models\Coupon;
 use App\Constants\CouponsFiles;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -28,6 +29,7 @@ final class CouponsController extends Controller
 
     public function create()
     {
+        
         return view('admin.coupons.create');
     }
 
@@ -52,7 +54,7 @@ final class CouponsController extends Controller
         $this->filesystemService->save($bgFileName, $bgFile->getContent());
 
         // dd($request->all());
-        return redirect()->route('admin.coupons.index');
+        return redirect()->route('admin.coupons.index')->with('success', 'Coupon Created successfully.');
     }
 
     public function edit(int $id)

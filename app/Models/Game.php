@@ -72,4 +72,9 @@ class Game extends Model
 
         return Storage::disk("s3")->url($this->game_image);
     }
+
+    public function coupons()
+    {
+        return $this->hasMany(Coupon::class);
+    }
 }

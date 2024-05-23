@@ -41,7 +41,7 @@ final class CompanyController extends Controller
             ])
         );
 
-        return back();
+        return back()->with('success', 'Settings Updated successfully.');
     }
     public function main()
     {

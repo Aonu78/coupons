@@ -60,6 +60,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 final class Coupon extends Model
 {
+    protected $fillable = [
+        'user_id',
+        'game_id',
+        'name',
+        'price',
+        'sale_start_date',
+        'sale_end_date',
+        'coupon_usage_start_date',
+        'coupon_usage_end_date',
+        'coupon_description',
+        'coupon_rebuyible',
+        'coupons_available',
+        'coupon_image', // Add this line
+    ];
     protected $guarded = [];
 
     public function getImageAttribute(): string

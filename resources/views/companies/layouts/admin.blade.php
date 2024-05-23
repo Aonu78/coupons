@@ -25,8 +25,27 @@
                         {{ $header }}
                     </div>
                 </header>
+                <div class="alert alert-success">
+                   dljqo dqwidhouwydg ouqwgydduygqweoudygdqwoeuoydgqwuge u
+                    <button type="button" class="close" onclick="this.parentElement.style.display='none';">&times;</button>
+                </div>
             @endif
-
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                        <button type="button" class="close" onclick="this.parentElement.style.display='none';">&times;</button>
+                    </div>
+                @endif
+        
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                        <button type="button" class="close" onclick="this.parentElement.style.display='none';">&times;</button>
+                    </div>
+                @endif
+    
+            </div>
             <!-- Page Content -->
             <main>
                 {{ $slot }}

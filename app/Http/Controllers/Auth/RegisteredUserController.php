@@ -91,7 +91,7 @@ class RegisteredUserController extends Controller
         ]);
         // dd($user);
         event(new Registered($user));
-        return redirect()->back();
+        return redirect()->back()->with('success', 'User Registered Successfully');
         // return redirect()->route('admin.users.index')->with('success', 'User registered successfully');            
     }
 }

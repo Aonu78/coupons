@@ -18,7 +18,9 @@ final class EditGameRequest extends BaseRequest
         return [
             "name" => "required|string",
             "description" => "required",
-            "game_visible" => "sometimes|required"
+            "game_visible" => "sometimes|required",
+            'game_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Add your validation rules here
+            'design' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048' // Add your validation rules here
         ];
     }
 
@@ -27,7 +29,9 @@ final class EditGameRequest extends BaseRequest
         return new GameDTO(
             $this->str("name"),
             $this->str("description"),
-            $this->has("game_visible")
+            $this->has("game_visible"),
+            $this->file('game_image'),
+            $this->file('design')
         );
     }
 }

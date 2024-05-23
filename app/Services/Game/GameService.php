@@ -99,9 +99,11 @@ final class GameService
         $game->game_visible = $gameData->isVisible;
 
         if (!is_null($gameData->cover)) {
-            $game->game_image = $this->saveGameCover($gameData->cover, $game->game_name);
+            $imageName = time() . '.' . $gameData->cover->extension();
+            $gameData->cover->move(public_path('uploads/game_image'), $imageName);
+            $game->game_image = 'uploads/game_image/' . $imageName;
         }
-
+    
         $game->save();
 
         return $game;

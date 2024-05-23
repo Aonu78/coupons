@@ -49,14 +49,22 @@ final class GamesController extends Controller
     public function update(string $id, EditGameRequest $request)
     {
         $game = $this->gameService->findGame($id);
-
+        // dd($request->all());
         if (is_null($game)) {
             return redirect()->route('admin.games.index');
         }
 
-        $this->gameService->updateGame($game, $request->getDTO());
+        $data = $this->gameService->updateGame($game, $request->getDTO());
 
+        if ($request->hasFile('design')) {
+            $imageName = time().'.'.$request->file('design')->extension();
+            $imagePath = $request->file('design')->move(public_path('uploads/game_image'), $imageName);
+            $data->game_image = 'uploads/game_image/'.$imageName;
+        }
+        $data->save();
+
+        // dd($data);
         return redirect()->route('admin.games.edit', $game->game_uuid)
-            ->with('success', 'You have successfully updated the game.');
+            ->with('success', 'You have successfully updated the Game.');
     }
 }

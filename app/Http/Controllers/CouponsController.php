@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Game;
 use App\Models\User;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
@@ -30,7 +31,8 @@ final class CouponsController extends Controller
 
     public function add()
     {
-        return view('coupons.create');
+        $games = Game::all();
+        return view('coupons.create',['games'=>$games]);
     }
 
     public function edit(int $id)
@@ -38,70 +40,92 @@ final class CouponsController extends Controller
         /** @var User $user */
         $user = Auth::user();
         $coupon = $user->coupons()->where('id', $id)->first();
-
+        $games = Game::all();
         if (is_null($coupon)) {
             return back();
         }
-
-        return view('coupons.edit', compact('coupon'));
+        
+        return view('coupons.edit', compact('coupon','games'));
     }
 
     public function update(int $id, Request $request)
     {
         /** @var User $user */
         $user = Auth::user();
-        $coupon = $user->coupons()->where('id', $id)->first();
-
-        if (is_null($coupon)) {
-            return back();
-        }
-
-        $coupon->name = $request->str('coupon_name');
-        $coupon->price = $request->str('coupon_price');
-        $coupon->sale_start_date = $request->str('coupon_sale_start_date');
-        $coupon->sale_end_date = $request->str('coupon_sale_end_date');
-        $coupon->coupon_usage_start_date = $request->str('coupon_usage_start_date');
-        $coupon->coupon_usage_end_date = $request->str('coupon_usage_end_date');
-        $coupon->coupon_description = $request->str('coupon_description');
-        $coupon->coupons_available = $request->integer('coupons_available', null);
-        $coupon->save();
-
-        if ($request->has('coupon_image')) {
-            $file = $request->file('coupon_image');
-            $fileName = sprintf(CouponsFiles::COUPON_IMAGE, $coupon->id);
-
-            $this->filesystemService->save($fileName, $file->getContent());
-        }
-
-        return redirect()->route('coupons.index');
-    }
-
-    public function create(CreateCouponRequest $request): RedirectResponse
-    {
-        /** @var User $user */
-        $user = Auth::user();
-        $couponDTO = $request->getDTO();
-
-        /** @var Coupon $coupon */
-        $coupon = $user->coupons()->newModelInstance();
+        $coupon = Coupon::find($id);
 
         $coupon->user_id = $user->id;
-        $coupon->name = $couponDTO->name;
-        $coupon->price = $couponDTO->price;
-        $coupon->sale_start_date = $couponDTO->saleStartDate;
-        $coupon->sale_end_date = $couponDTO->saleEndDate;
-        $coupon->coupon_usage_start_date = $couponDTO->usageStartDate;
-        $coupon->coupon_usage_end_date = $couponDTO->usageEndDate;
-        $coupon->coupon_description = $couponDTO->description;
-        $coupon->coupon_rebuyible = $couponDTO->rebuyible;
-        $coupon->coupons_available = $couponDTO->couponsAvailable;
+        $coupon->name = $request->input('coupon_name');
+        $coupon->game_id = $request->input('game_id');
+        $coupon->coupon_description = $request->input('coupon_description');
+        $coupon->price = $request->input('coupon_price');
+        $coupon->coupon_usage_start_date = $request->input('coupon_usage_start_date');
+        $coupon->coupon_usage_end_date = $request->input('coupon_usage_end_date');
+        $coupon->sale_start_date = $request->input('coupon_sale_start_date');
+        $coupon->sale_end_date = $request->input('coupon_sale_end_date');
+        $coupon->coupons_available = $request->input('coupons_available');
+         // Set the image path if it exists
+        if ($request->hasFile('coupon_image')) {
+            $imageName = time().'.'.$request->file('coupon_image')->extension();
+            $imagePath = $request->file('coupon_image')->move(public_path('uploads/coupon_image'), $imageName);
+            $coupon->coupon_image = 'uploads/coupon_image/'.$imageName;
+        }
         $coupon->save();
+        // $user = Auth::user();
+        // $coupon = $user->coupons()->where('id', $id)->first();
 
-        $file = $couponDTO->icon;
-        $fileName = sprintf(CouponsFiles::COUPON_IMAGE, $coupon->id);
-        $this->filesystemService->save($fileName, $file->getContent());
+        // if (is_null($coupon)) {
+        //     return back();
+        // }
 
-        return redirect()->route('coupons.index');
+        // $coupon->name = $request->str('coupon_name');
+        // $coupon->price = $request->str('coupon_price');
+        // $coupon->sale_start_date = $request->str('coupon_sale_start_date');
+        // $coupon->sale_end_date = $request->str('coupon_sale_end_date');
+        // $coupon->coupon_usage_start_date = $request->str('coupon_usage_start_date');
+        // $coupon->coupon_usage_end_date = $request->str('coupon_usage_end_date');
+        // $coupon->coupon_description = $request->str('coupon_description');
+        // $coupon->coupons_available = $request->integer('coupons_available', null);
+        // $coupon->save();
+
+        // if ($request->has('coupon_image')) {
+        //     $file = $request->file('coupon_image');
+        //     $fileName = sprintf(CouponsFiles::COUPON_IMAGE, $coupon->id);
+
+        //     $this->filesystemService->save($fileName, $file->getContent());
+        // }
+
+        return redirect()->route('coupons.index')->with('success', 'Coupon Updated successfully.');
+    }
+
+    public function create(Request $request)
+    {
+        // dd($request->all());
+        $user = Auth::user();
+        $coupon = new Coupon();
+
+        $coupon->user_id = $user->id;
+        $coupon->name = $request->input('coupon_name');
+        $coupon->game_id = $request->input('game_id');
+        $coupon->coupon_description = $request->input('coupon_description');
+        $coupon->price = $request->input('coupon_price');
+        $coupon->coupon_usage_start_date = $request->input('coupon_usage_start_date');
+        $coupon->coupon_usage_end_date = $request->input('coupon_usage_end_date');
+        $coupon->sale_start_date = $request->input('coupon_sale_start_date');
+        $coupon->sale_end_date = $request->input('coupon_sale_end_date');
+        $coupon->coupons_available = $request->input('coupons_available');
+         // Set the image path if it exists
+        if ($request->hasFile('coupon_image')) {
+            $imageName = time().'.'.$request->file('coupon_image')->extension();
+            $imagePath = $request->file('coupon_image')->move(public_path('uploads/coupon_image'), $imageName);
+            $coupon->coupon_image = 'uploads/coupon_image/'.$imageName;
+        }
+        $coupon->save();
+        // $file = $couponDTO->icon;
+        // $fileName = sprintf(CouponsFiles::COUPON_IMAGE, $coupon->id);
+        // $this->filesystemService->save($fileName, $file->getContent());
+
+        return redirect()->route('coupons.index')->with('success', 'Coupon Created successfully.');
     }
 
     public function usePage(int $id)

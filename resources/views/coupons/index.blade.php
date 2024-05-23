@@ -16,7 +16,9 @@
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr class="text-left">
                         <th scope="col" class="px-6 py-3">ID</th>
+                        <th scope="col" class="px-6 py-3"></th>
                         <th scope="col" class="px-6 py-3">Name</th>
+                        <th scope="col" class="px-6 py-3">Game</th>
                         <th scope="col" class="px-6 py-3">Price</th>
                         <th scope="col" class="px-6 py-3">Start Date</th>
                         <th scope="col" class="px-6 py-3">End Date</th>
@@ -28,14 +30,33 @@
                     </thead>
                     <tbody>
                     @foreach($coupons as $coupon)
+                    @php
+                        $usageEndDate = new DateTime($coupon->coupon_usage_end_date);
+                        $saleenddate = new DateTime($coupon->sale_end_date);
+                        $today = new DateTime();
+                    @endphp
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <td class="px-6 py-4">{{ $coupon->id }}</td>
+                            <td class="px-6 py-4">{{ $loop->iteration}}</td>
+                            <td class=""><img src="{{asset($coupon->coupon_image) }}" alt="" width="35px"></td>
                             <td class="px-6 py-4">{{ $coupon->name }}</td>
+                            <td class="px-6 py-4">{{ $coupon->game->game_name }}</td>
                             <td class="px-6 py-4">{{ $coupon->price }}</td>
                             <td class="px-6 py-4">{{ $coupon->coupon_usage_start_date }}</td>
-                            <td class="px-6 py-4">{{ $coupon->coupon_usage_end_date }}</td>
+                            <td class="px-6 py-4">
+                                @if ($usageEndDate < $today)
+                                    Expired
+                                @else
+                                {{ $coupon->coupon_usage_end_date }}
+                                @endif
+                            </td>
                             <td class="px-6 py-4">{{ $coupon->sale_start_date }}</td>
-                            <td class="px-6 py-4">{{ $coupon->sale_end_date }}</td>
+                            <td class="px-6 py-4">
+                                @if ($saleenddate < $today)
+                                    Expired
+                                @else
+                                {{ $coupon->sale_end_date }}
+                                @endif
+                            </td>
                             <td class="px-6 py-4">{{ $coupon->coupons_available ?? '--' }}</td>
                             <td class="px-6 py-4" style="display: flex;justify-content: space-around;">
                                 <a href="{{route('coupons.edit', $coupon->id)}}">

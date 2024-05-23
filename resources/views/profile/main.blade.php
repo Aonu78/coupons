@@ -13,10 +13,10 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    <link rel="preload" as="style" href="http://127.0.0.1:8000/build/assets/app-1fd46269.css" />
-    <link rel="modulepreload" href="http://127.0.0.1:8000/build/assets/app-7c0572f8.js" />
-    <link rel="stylesheet" href="http://127.0.0.1:8000/build/assets/app-1fd46269.css" />
-    <script type="module" src="http://127.0.0.1:8000/build/assets/app-7c0572f8.js"></script>
+    <link rel="preload" as="style" href="/build/assets/app-1fd46269.css" />
+    <link rel="modulepreload" href="/build/assets/app-7c0572f8.js" />
+    <link rel="stylesheet" href="/build/assets/app-1fd46269.css" />
+    <script type="module" src="/build/assets/app-7c0572f8.js"></script>
 </head>
 
 <body class="font-sans antialiased">
@@ -149,7 +149,22 @@
         </nav>
 
         <!-- Page Heading -->
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                    <button type="button" class="close" onclick="this.parentElement.style.display='none';">&times;</button>
+                </div>
+            @endif
+    
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                    <button type="button" class="close" onclick="this.parentElement.style.display='none';">&times;</button>
+                </div>
+            @endif
 
+        </div>
         <!-- Page Content -->
         <main>
             

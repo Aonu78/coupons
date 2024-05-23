@@ -31,6 +31,19 @@
                         <x-input-error :messages="$errors->get('coupon_price')" class="mt-2"/>
                     </div>
 
+                    <div class="mt-2">
+                        <x-input-label for="game_id" :value="__('Select Game')"/>
+                        <select required class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm block mt-1 w-full" name="game_id" id="game_id">
+                            @foreach ($games as $item)
+                            @if ($item->id ==$coupon->game_id)
+                            <option value="{{ $item->id }}" selected>{{ $item->game_name }}</option>
+                            @else
+                            <option value="{{ $item->id }}">{{ $item->game_name }}</option>
+                            @endif
+                            @endforeach                            
+                        </select>
+                    </div>
+
                     <div class="flex flex-row gap-x-2">
                         <div class="mt-2 flex-1">
                             <x-input-label for="start_date" :value="__('Start Date')"/>
@@ -70,8 +83,12 @@
 
                     <div class="mt-2">
                         <x-input-label for="coupon_image" :value="__('Design')"/>
-                        <x-text-input id="coupon_image" class="block mt-1 w-full" type="file" name="coupon_image"
+                        <div style="display: flex;">
+                            <img src="{{asset($coupon->coupon_image) }}" alt="" width="40px" style="margin-right: 20px;">
+
+                            <x-text-input id="coupon_image" class="block mt-1 w-full" type="file" name="coupon_image"
                                       :value="old('coupon_image')" accept="image/*"/>
+                        </div>
                         <x-input-error :messages="$errors->get('coupon_image')" class="mt-2"/>
                     </div>
 

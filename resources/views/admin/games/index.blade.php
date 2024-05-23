@@ -16,6 +16,7 @@
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr class="text-left">
                         <th scope="col" class="px-6 py-3">#</th>
+                        <th scope="col" class="px-6 py-3"></th>
                         <th scope="col" class="px-6 py-3">{{__('games.admin.index.name')}}</th>
                         <th scope="col" class="px-6 py-3">{{__('games.admin.index.is_visible')}}</th>
                         <th scope="col" class="px-6 py-3 text-center">{{__('games.admin.index.actions')}}</th>
@@ -25,6 +26,7 @@
                     @foreach($games as $game)
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <td class="px-6 py-4">{{ ($games->currentPage() - 1) * $games->perPage() + $loop->index + 1 }}</td>
+                            <td class="px-6 py-4"><img src="{{asset($game->game_image) }}" alt="" width="35px"></td>
                             <td class="px-6 py-4">{{ $game->game_name }}</td>
                             <td class="px-6 py-4">{{ $game->game_visible ? __('games.admin.index.visible') : __('games.admin.index.not_visible') }}</td>
                             <td class="px-6 py-4 text-center">
