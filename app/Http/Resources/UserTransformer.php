@@ -20,7 +20,7 @@ class UserTransformer extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // $this->createOrGetStripeCustomer();
+        $this->createOrGetStripeCustomer();
 
         $cpTokens = $this->getWallet(WalletCurrency::CP_TOKEN)?->wallet_balance?->getAmountString(
         ) ?? $this->cp_token_balance;
@@ -37,7 +37,7 @@ class UserTransformer extends JsonResource
             "user_avatar"            => $this->avatar,
             "default_payment_method" => new PaymentMethodTransformer($this->defaultPaymentMethod()),
             "user_bank_account"      => is_null($userBank) ? null : new BankAccountTransformer($userBank),
-            "user_invite_link"       => route('invite', $this->invite_code),
+            "user_invite_link"       => null, //route('invite', $this->invite_code),
             "user_invited_by"        => is_null($userInvitedBy) ? null : new InvitedByTransformer($userInvitedBy),
             "wallets"                => [
                 "CP_TOKEN" => $cpTokens,

@@ -139,6 +139,7 @@ final class User extends Authenticatable implements WalletHolderContract, HasWit
         'referral_code',
         'line_id',
         'difficulty',
+        'score',
     ];
     protected $guarded = ['id'];
     /**
@@ -174,19 +175,19 @@ final class User extends Authenticatable implements WalletHolderContract, HasWit
 
     public function getAvatarAttribute(): string
     {
-        $objFilesystem = FilesystemService::factory();
+        // $objFilesystem = FilesystemService::factory();
 
-        $avatarPath = sprintf(
-            UserFiles::USER_AVATAR_FULL_NAME,
-            $this->id,
-            $this->avatar_version ?? time()
-        );
+        // $avatarPath = sprintf(
+        //     UserFiles::USER_AVATAR_FULL_NAME,
+        //     $this->id,
+        //     $this->avatar_version ?? time()
+        // );
 
-        if ($objFilesystem->exists($avatarPath)) {
-            return $objFilesystem->url($avatarPath) . "?nocache=" . time();
-        }
+        // if ($objFilesystem->exists($avatarPath)) {
+        //     return $objFilesystem->url($avatarPath) . "?nocache=" . time();
+        // }
 
-        return UserFiles::DEFAULT_AVATAR;
+        return asset('assets/images/avatar.png');
     }
 
     public function boughtCoupons(): BelongsToMany

@@ -78,6 +78,12 @@
             </select>
         </div>
 
+        <div>
+            <x-input-label for="score" :value="__('Score Setting')" />
+            <x-text-input id="score" name="score" type="number" class="mt-1 block w-full" :value="old('score', $user->score)" required autofocus autocomplete="score" />
+            <x-input-error class="mt-2" :messages="$errors->get('score')" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 

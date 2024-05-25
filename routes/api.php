@@ -163,8 +163,8 @@ Route::prefix('shop')->group(function () {
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return response()->json([
-        // "data" => new UserTransformer($request->user())
-        "data" => User::find($request->user())
+        "data" => new UserTransformer($request->user())
+        // "data" => User::find($request->user())
     ]);
 });
 

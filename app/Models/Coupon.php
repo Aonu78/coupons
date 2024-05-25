@@ -76,17 +76,17 @@ final class Coupon extends Model
     ];
     protected $guarded = [];
 
-    public function getImageAttribute(): string
-    {
-        $objFilesystem = FilesystemService::factory();
+    // public function getImageAttribute(): string
+    // {
+    //     $objFilesystem = FilesystemService::factory();
 
-        $imagePath = sprintf(
-            CouponsFiles::COUPON_IMAGE,
-            $this->id
-        );
+    //     $imagePath = sprintf(
+    //         CouponsFiles::COUPON_IMAGE,
+    //         $this->id
+    //     );
 
-        return $objFilesystem->url($imagePath) . "?nocache=" . time();
-    }
+    //     return $objFilesystem->url($imagePath) . "?nocache=" . time();
+    // }
 
     public function getBackgroundAttribute(): string
     {
