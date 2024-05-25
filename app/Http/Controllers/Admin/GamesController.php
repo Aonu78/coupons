@@ -59,7 +59,7 @@ final class GamesController extends Controller
         if ($request->hasFile('design')) {
             $imageName = time().'.'.$request->file('design')->extension();
             $imagePath = $request->file('design')->move(public_path('uploads/game_image'), $imageName);
-            $data->game_image = 'uploads/game_image/'.$imageName;
+            $data->game_image = 'https://coupra.inovixion.com/uploads/game_image/'.$imageName;
         }
         $data->save();
 

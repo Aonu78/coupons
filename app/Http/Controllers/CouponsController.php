@@ -68,7 +68,7 @@ final class CouponsController extends Controller
         if ($request->hasFile('coupon_image')) {
             $imageName = time().'.'.$request->file('coupon_image')->extension();
             $imagePath = $request->file('coupon_image')->move(public_path('uploads/coupon_image'), $imageName);
-            $coupon->coupon_image = 'uploads/coupon_image/'.$imageName;
+            $coupon->coupon_image = 'https://coupra.inovixion.com/uploads/coupon_image/'.$imageName;
         }
         $coupon->save();
         // $user = Auth::user();
@@ -118,7 +118,7 @@ final class CouponsController extends Controller
         if ($request->hasFile('coupon_image')) {
             $imageName = time().'.'.$request->file('coupon_image')->extension();
             $imagePath = $request->file('coupon_image')->move(public_path('uploads/coupon_image'), $imageName);
-            $coupon->coupon_image = 'uploads/coupon_image/'.$imageName;
+            $coupon->coupon_image = 'https://coupra.inovixion.com/uploads/coupon_image/'.$imageName;
         }
         $coupon->save();
         // $file = $couponDTO->icon;

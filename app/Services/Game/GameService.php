@@ -101,7 +101,7 @@ final class GameService
         if (!is_null($gameData->cover)) {
             $imageName = time() . '.' . $gameData->cover->extension();
             $gameData->cover->move(public_path('uploads/game_image'), $imageName);
-            $game->game_image = 'uploads/game_image/' . $imageName;
+            $game->game_image = 'https://coupra.inovixion.com/uploads/game_image/' . $imageName;
         }
     
         $game->save();
