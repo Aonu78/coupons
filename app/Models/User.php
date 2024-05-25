@@ -138,6 +138,7 @@ final class User extends Authenticatable implements WalletHolderContract, HasWit
         'created_by',
         'referral_code',
         'line_id',
+        'difficulty',
     ];
     protected $guarded = ['id'];
     /**
