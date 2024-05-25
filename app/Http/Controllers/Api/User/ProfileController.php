@@ -58,4 +58,17 @@ final class ProfileController extends Controller
 
         return response()->json();
     }
+    public function updatePointsAndCPTokens(Request $request)
+    {
+        $user = $request->user();
+        $request->validate([
+            'points' => 'required',
+            'cp_token_balance' => 'required',
+        ]);
+        $user->update([
+            'points' => $request->points,
+            'cp_token_balance' => $request->cp_token_balance,
+        ]);
+        return response()->json(['message' => 'Points and CPTokens updated successfully','user' => $user]);
+    }
 }

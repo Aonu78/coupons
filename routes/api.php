@@ -91,6 +91,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/', [ProfileController::class, 'update']);
         Route::put('/password', [ProfileController::class, 'updatePassword']);
         Route::delete('/', [ProfileController::class, 'destroy']);
+        Route::patch('/update-points-cptokens', [ProfileController::class, 'updatePointsAndCPTokens']); 
     });
 
     Route::prefix('games')->group(function () {
@@ -167,6 +168,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         // "data" => User::find($request->user())
     ]);
 });
+
 
 Route::prefix('tournaments')->middleware('auth:sanctum')->group(function () {
     Route::get('', [TournamentsController::class, 'getActiveTournament']);

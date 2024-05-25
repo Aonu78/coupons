@@ -41,7 +41,8 @@ class UserTransformer extends JsonResource
             "user_invited_by"        => is_null($userInvitedBy) ? null : new InvitedByTransformer($userInvitedBy),
             "wallets"                => [
                 "CP_TOKEN" => $cpTokens,
-                "USD"      => $usdTokens
+                "USD"      => $usdTokens,
+                "POINTS"   => $this->points,
             ]
         ];
     }

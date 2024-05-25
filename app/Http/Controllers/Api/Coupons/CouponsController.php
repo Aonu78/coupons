@@ -36,7 +36,8 @@ final class CouponsController extends Controller
     public function index(Request $request, ApiResponse $response): JsonResponse
     {
         $coupons = $this->couponsService->getAll($request->str("name"));
-
+        // dd($coupons);
+        // return $response->success($coupons);
         return $response->success(
             CouponsTransformer::collection($coupons),
             meta: ApiResponse::buildPaginationMeta($coupons)

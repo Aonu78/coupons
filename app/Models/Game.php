@@ -66,11 +66,12 @@ class Game extends Model
 
     public function getImageAttribute(): string
     {
-        if (is_null($this->game_image)) {
-            return "";
-        }
+        // if (is_null($this->game_image)) {
+        //     return "";
+        // }
 
-        return Storage::disk("s3")->url($this->game_image);
+        // return Storage::disk("s3")->url($this->game_image);
+        return $this->game_image;
     }
 
     public function coupons()

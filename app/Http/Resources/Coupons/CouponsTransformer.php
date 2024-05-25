@@ -31,7 +31,7 @@ final class CouponsTransformer extends JsonResource
             "coupon_sale_end_date"    => $this->sale_end_date,
             "coupon_usage_start_date" => $this->coupon_usage_start_date,
             "coupon_usage_end_date"   => $this->coupon_usage_end_date,
-            "coupon_image"            => $this->image,
+            "coupon_image"            => $this->coupon_image,
             "coupons_available"       => $this->coupons_available,
             "coupon_rebuyible"        => $this->coupon_rebuyible,
             "coupon_can_buy"          => true,
